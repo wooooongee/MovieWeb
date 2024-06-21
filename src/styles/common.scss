@@ -1,0 +1,14 @@
+@import '../styles/mixin.scss';
+
+* {
+  box-sizing: border-box;
+}
+
+button:hover {
+  cursor: pointer;
+}
+
+button {
+  @include textStyle(18px, 500);
+  border-radius: 50px;
+}
