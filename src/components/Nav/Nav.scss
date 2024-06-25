@@ -1,44 +1,72 @@
+/* Nav.scss */
 @import "../../styles/mixin.scss";
 
 .navbar {
-  width: 100vw;
   @include flexCenter;
-  background-color: #eee;
+  background-color: rgba(66, 57, 57, 0.3);
   font-size: 20px;
   padding: 20px;
-  color: #0d00ff;
+  color: white;
+  position: relative;
+  z-index: 1;
+  min-width: 700px;
+  margin-top: -7px;
 
   .logo {
-    width: 30vw;
+    width: 30%;
     @include textStyle(25px, 400);
-    transition: all 1s;
 
     &:hover {
       cursor: pointer;
-      color: black;
     }
   }
 
   .menu {
-    width: 40vw;
+    width: 40%;
     display: flex;
     justify-content: space-around;
+    position: relative;
     @include textStyle(20px, 300);
 
-    p {
-      transition: all 1s;
-      &:hover {
-        color: black;
+    &:hover{
+      cursor: pointer;
+    }
+
+    .menu-item {
+      p {
+        transition: all 1s;
+        &:hover {
+          color: tomato;
+        }
       }
     }
 
-    &:hover {
-      cursor: pointer;
+    .dropdown {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      width: 100%;
+      background-color: rgba(66, 57, 57, 0.3); 
+      display: flex;
+      justify-content: space-around;
+      padding: 20px 0; 
+
+      .dropdown-section {
+        display: flex;
+        flex-direction: column;
+        p {
+          margin: 5px 0;
+          &:hover {
+            color: tomato;
+            cursor: pointer;
+          }
+        }
+      }
     }
   }
 
   .search {
-    width: 30vw;
+    width: 30%;
     display: flex;
     justify-content: flex-end;
     align-items: center;
@@ -46,13 +74,15 @@
 
     input {
       margin-left: 5px;
+      margin-top: 2px;
       width: 40%;
-      border: 1px #eee;
-      border-radius: 30px;
-      padding: 5px;
+      border: 1px solid tomato;
+      background-color: black;
+      color: white;
+      padding: 7px;
 
       &:focus {
-        caret-color: transparent;
+        outline: none;
       }
     }
   }

@@ -1,8 +1,9 @@
-.footer{
-    width: 100vw;
-    position: absolute;
-    bottom: 0;
-    color: #0d00ff;
-    padding: 20px;
-    background-color: #eee;
+@import "../../styles/mixin.scss";
+
+.footer {
+  @include textStyle(15px, 300);
+  width: 100vw;
+  padding: 20px;
+  color: white;
+  background-color: rgba(0, 0, 0);
 }
