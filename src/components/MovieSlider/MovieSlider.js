@@ -1,122 +1,98 @@
+import React, { useState, useEffect } from 'react';
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import { useState } from "react";
-import "./MovieSlider.scss"
+import "./MovieSlider.scss";
 import { useNavigate } from "react-router-dom";
 
-const MovieSlider = () => {
-    const [hoveredIndex, setHoveredIndex] = useState(false);  const settings = {
-      dots: true,
-      infinite: true,
-      speed: 900,
-      slidesToShow: 6,
-      slidesToScroll: 1,
-      draggable: true,
-      autoplay: true,
-      pauseOnFocus: true,
-      autoplaySpeed: 4000,
-  
-      responsive: [
-        {
-          breakpoint: 960,
-          settings: {
-            slidesToShow: 3,
-          },
-        },
-        {
-          breakpoint: 768,
-          settings: {
-            slidesToShow: 2,
-          },
-        },
-      ],
+const MovieSlider = ({endpoint,title}) => {
+  const key = "cea591806ee129e294031c6b81dcea4a";
+  const URL = "https://api.themoviedb.org/3/movie/";
+  const navigate = useNavigate();
+
+  const [hoveredIndex, setHoveredIndex] = useState(null);
+  const [movies, setMovies] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchMovies = async () => {
+      setIsLoading(true);
+      try {
+        const response = await fetch(
+          `${URL}${endpoint}?api_key=${key}&language=ko-KR&page=1`
+        );
+        const data = await response.json();
+        setMovies(data.results ? data.results.slice(0, 10) : [data]);
+      } catch (error) {
+        console.error("Error fetching movies:", error);
+      } finally {
+        setIsLoading(false);
+      }
     };
 
-    const navigate = useNavigate();
-  
-    //fetch요청으로 받아올 데이터 예시
-    const images = [
+    fetchMovies();
+  }, [endpoint]);
+
+  const settings = {
+    dots: true,
+    infinite: true,
+    speed: 1000,
+    slidesToShow: 6,
+    slidesToScroll: 1,
+    draggable: true,
+    autoplay: true,
+    pauseOnFocus: true,
+    autoplaySpeed: 4000,
+    responsive: [
       {
-        id: 1,
-        src: "https://images.unsplash.com/photo-1616530940355-351fabd9524b?q=80&w=1035&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-        title: "영화 제목 1",
-        description: "영화 소개글 1",
+        breakpoint: 960,
+        settings: {
+          slidesToShow: 3,
+        },
       },
       {
-        id: 2,
-        src: "https://images.unsplash.com/photo-1616530940355-351fabd9524b?q=80&w=1035&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-        title: "영화 제목 2",
-        description: "영화 소개글 2",
+        breakpoint: 768,
+        settings: {
+          slidesToShow: 2,
+        },
       },
-      {
-        id: 3,
-        src: "https://images.unsplash.com/photo-1616530940355-351fabd9524b?q=80&w=1035&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-        title: "영화 제목 3",
-        description: "영화 소개글 2",
-      },
-      {
-        id: 4,
-        src: "https://images.unsplash.com/photo-1616530940355-351fabd9524b?q=80&w=1035&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-        title: "영화 제목 4",
-        description: "영화 소개글 2",
-      },
-      {
-        id: 5,
-        src: "https://images.unsplash.com/photo-1616530940355-351fabd9524b?q=80&w=1035&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-        title: "영화 제목 4",
-        description: "영화 소개글 2",
-      },
-      {
-        id: 6,
-        src: "https://images.unsplash.com/photo-1616530940355-351fabd9524b?q=80&w=1035&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-        title: "영화 제목 4",
-        description: "영화 소개글 2",
-      },
-      {
-        id: 7,
-        src: "https://images.unsplash.com/photo-1616530940355-351fabd9524b?q=80&w=1035&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-        title: "영화 제목 4",
-        description: "영화 소개글 2",
-      },
-      {
-        id: 8,
-        src: "https://images.unsplash.com/photo-1616530940355-351fabd9524b?q=80&w=1035&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-        title: "영화 제목 4",
-        description: "영화 소개글 2",
-      },
-    ];
-  
-    return (
-      <div className="slider-box">
-        <Slider {...settings}>
-          {images.map((image, index) => (
-            <div className="slide-item" key={image.id}>
-              <div
-                className="slide-content"
-                onMouseEnter={() => setHoveredIndex(index)}
-                onMouseLeave={() => setHoveredIndex(false)}
-                onClick={()=>{navigate('/detail/1')}}
-              >
-                <img
-                  src={image.src}
-                  alt=""
-                  className={hoveredIndex === index ? "hovered" : ""}
-                />
-                {hoveredIndex === index && (
-                  <div className="overlay">
-                    <div className="movie-info">
-                      <h3>{image.title}</h3>
-                      <p>{image.description}</p>
-                    </div>
-                  </div>
-                )}
-              </div>
-            </div>
-          ))}
-        </Slider>
-      </div>
-    );
+    ],
   };
 
-  export default MovieSlider;
+  if (isLoading) {
+    return <div>로딩 중...</div>;
+  }
+
+  return (
+    <div className="slider-box">
+      <Slider {...settings}>
+        {movies.map((movie, index) => (
+          <div className="slide-item" key={movie.id}>
+            <div
+              className="slide-content"
+              onMouseEnter={() => setHoveredIndex(index)}
+              onMouseLeave={() => setHoveredIndex(null)}
+              onClick={() => navigate(`/detail/${movie.id}`)}
+            >
+              <img
+                src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
+                alt={movie.title}
+                className={hoveredIndex === index ? "hovered" : ""}
+              />
+              {hoveredIndex === index && (
+                <div className="overlay">
+                  <div className="movie-info">
+                    <h3>{movie.title}</h3>
+                    <p>{movie.overview ? movie.overview.slice(0, 100) + "..." : "설명이 없습니다."}</p>
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+        ))}
+      </Slider>
+    </div>
+  );
+};
+
+export default MovieSlider;
