@@ -30,8 +30,7 @@ const Main = () => {
           Latest Movie | <span className="watch">Watch All</span>
         </p>
       </div>
-      <MovieSlider />
-    </>
+      <MovieSlider endpoint="now_playing" title="최신 영화" />    </>
   );
 };
 
