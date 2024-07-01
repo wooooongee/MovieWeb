@@ -1,36 +1,81 @@
+import React, { useState, useEffect } from 'react';
 import "./Main.scss";
 import MovieSlider from "../../components/MovieSlider/MovieSlider";
 
 const Main = () => {
+  const [featuredMovie, setFeaturedMovie] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+
+  const key = "cea591806ee129e294031c6b81dcea4a";
+  const baseURL = "https://api.themoviedb.org/3";
+
+  useEffect(() => {
+    const fetchFeaturedMovie = async () => {
+      try {
+        const popularResponse = await fetch(`${baseURL}/movie/popular?api_key=${key}&language=ko-KR&page=1`);
+        const popularData = await popularResponse.json();
+        console.log(popularData)
+        
+        for (let movie of popularData.results) {
+          const videoResponse = await fetch(`${baseURL}/movie/${movie.id}/videos?api_key=${key}&language=ko-KR`);
+          const videoData = await videoResponse.json();
+          
+          if (videoData.results && videoData.results.length > 0) {
+            console.log(videoData)
+            const videoKey = videoData.results[0].key;
+            setFeaturedMovie({
+              ...movie,
+              videoUrl: `https://www.youtube.com/embed/${videoKey}`
+            });
+            break;
+          }
+        }
+      } catch (error) {
+        console.error("Error fetching featured movie:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchFeaturedMovie();
+  }, []);
+
+  if (isLoading) {
+    return <div>로딩 중...</div>;
+  }
+
   return (
     <>
-      <div className="video-container">
-        <video loop autoPlay muted className="video">
-          <source
-            type="video/mp4"
-            src="https://videos.pexels.com/video-files/7989632/7989632-uhd_1440_2732_25fps.mp4"
-          />
-        </video>
-        <div className="video-content">
-          <p>Out Now</p>
-          <h1>Movie Title</h1>
-          <p>
-            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Atque
-            ratione repudiandae nostrum voluptas id qui voluptate recusandae
-            dignissimos omnis, ipsum dicta modi quaerat a, possimus quos velit
-            illum temporibus eligendi! Lorem ipsum dolor sit amet consectetur
-            adipisicing elit. Quis culpa odit amet saepe eius consequuntur,
-            tempora sequi tempore deleniti maiores quos debitis nesciunt
-            repudiandae magni suscipit fuga at quaerat similique?
-          </p>
+      {featuredMovie && (
+        <div className="video-container">
+          {featuredMovie.videoUrl ? (
+            <iframe
+              src={featuredMovie.videoUrl}
+              title={featuredMovie.title}
+              frameBorder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+            ></iframe>
+          ) : (
+            <img 
+              src={`https://image.tmdb.org/t/p/original${featuredMovie.backdrop_path}`} 
+              alt={featuredMovie.title} 
+            />
+          )}
+          <div className="video-content">
+            <p>최고 인기 영화</p>
+            <h1>{featuredMovie.title}</h1>
+            <p>{featuredMovie.overview}</p>
+          </div>
         </div>
-      </div>
+      )}
       <div className="latest">
         <p>
           Latest Movie | <span className="watch">Watch All</span>
         </p>
       </div>
-      <MovieSlider endpoint="now_playing" title="최신 영화" />    </>
+      <MovieSlider endpoint="now_playing" title="최신 영화" />
+    </>
   );
 };
 
