@@ -5,7 +5,7 @@ import "slick-carousel/slick/slick-theme.css";
 import "./MovieSlider.scss";
 import { useNavigate } from "react-router-dom";
 
-const MovieSlider = ({endpoint,title}) => {
+const MovieSlider = ({endpoint}) => {
   const key = "cea591806ee129e294031c6b81dcea4a";
   const URL = "https://api.themoviedb.org/3/movie/";
   const navigate = useNavigate();
