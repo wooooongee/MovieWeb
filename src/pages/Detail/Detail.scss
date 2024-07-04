@@ -1,5 +1,8 @@
+@import "../../styles/mixin.scss";
+
 .detail-container {
   padding: 100px 50px 0 50px;
+  @include textStyle(20px, 400);
 
   .navigate-btn {
     color: tomato;
@@ -21,15 +24,52 @@
 
       .detail-img {
         width: 100%;
+        max-height: 95%;
         object-fit: cover;
       }
     }
 
     .detail-content {
       width: 50%;
-      overflow: hidden;
       border-left: 1px solid tomato;
       padding-left: 20px;
+      line-height: 30px;
+      .content{
+        font-size: 18px;
+      }
+
+      .trailers {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 20px;
+        padding: 10px 0;
+        overflow-x: auto;
+        white-space: nowrap;
+
+        &::-webkit-scrollbar {
+          height: 8px;
+        }
+
+        &::-webkit-scrollbar-thumb {
+          background-color: rgba(255, 99, 71, 0.5);
+          border-radius: 4px;
+        }
+
+        &::-webkit-scrollbar-track {
+          background-color: rgba(255, 99, 71, 0.1);
+        }
+
+        .trailer {
+          flex: 0 0 auto;
+          width: 500px;
+
+          iframe {
+            width: 100%;
+            height: 280px;
+          }
+        }
+      }
     }
   }
 
@@ -42,6 +82,73 @@
       font-size: 25px;
       color: tomato;
       margin-bottom: 10px;
+    }
+  }
+}
+
+@include tablet {
+  .detail-container {
+    padding: 50px 20px 0 20px;
+
+    .detail-box {
+      .detail-content {
+        border-left: none;
+        padding-left: 0;
+
+        .content {
+          font-size: 15px;
+          max-height: 240px;
+        }
+
+        .trailers {
+            flex-direction: row;
+          .trailer {
+            width: 480px;
+
+            iframe {
+              width: 100%;
+              height: 300px;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+@include mobile {
+  .detail-container {
+    padding: 50px 20px 0 20px;
+
+    .detail-box {
+      flex-direction: column;
+
+      .detail-title,
+      .detail-content {
+        width: 100%;
+      }
+
+      .detail-content {
+        border-left: none;
+        padding-left: 0;
+
+        .content {
+          font-size: 15px;
+          max-height: 240px;
+        }
+
+        .trailers {
+            align-items: center;
+          .trailer {
+            width: 400px;
+
+            iframe {
+              width: 100%;
+              height: 220px;
+            }
+          }
+        }
+      }
     }
   }
 }
