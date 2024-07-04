@@ -1,11 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import "./MovieSlider.scss";
 import { useNavigate } from "react-router-dom";
 
-const MovieSlider = ({endpoint}) => {
+
+const MovieSlider = ({ endpoint }) => {
   const key = "cea591806ee129e294031c6b81dcea4a";
   const URL = "https://api.themoviedb.org/3/movie/";
   const navigate = useNavigate();
@@ -35,6 +36,7 @@ const MovieSlider = ({endpoint}) => {
 
   const settings = {
     dots: true,
+    arrows: false,
     infinite: true,
     speed: 1000,
     slidesToShow: 6,
@@ -83,7 +85,11 @@ const MovieSlider = ({endpoint}) => {
                 <div className="overlay">
                   <div className="movie-info">
                     <h3>{movie.title}</h3>
-                    <p>{movie.overview ? movie.overview.slice(0, 100) + "..." : "설명이 없습니다."}</p>
+                    <p>
+                      {movie.overview
+                        ? movie.overview.slice(0, 100) + "..."
+                        : "설명이 없습니다."}
+                    </p>
                   </div>
                 </div>
               )}
