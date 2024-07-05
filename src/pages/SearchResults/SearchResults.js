@@ -1,6 +1,8 @@
 import React from "react";
 import { useLocation, Link } from "react-router-dom";
 import "./SearchResults.scss";
+import MovieGrid from "../../components/MovieGrid/MovieGrid";
+
 const SearchResults = () => {
   const location = useLocation();
   const { results, searchTerm } = location.state || {};
@@ -17,24 +19,7 @@ const SearchResults = () => {
       {results.length === 0 ? (
         <p>검색 결과가 없습니다.</p>
       ) : (
-        <div className="movie-grid">
-          {results.map((movie) => (
-            <div key={movie.id} className="movie-card">
-              <Link to={`/detail/${movie.id}`}>
-                <div className="image-container">
-                  <img
-                    src={`https://image.tmdb.org/t/p/w300${movie.poster_path}`}
-                    alt={movie.title}
-                  />
-                </div>
-                <div className="movie-info">
-                  <h3>{movie.title}</h3>
-                  <p>개봉일: {movie.release_date}</p>
-                </div>
-              </Link>
-            </div>
-          ))}
-        </div>
+        <MovieGrid movies={results} />
       )}
     </div>
   );

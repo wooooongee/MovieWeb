@@ -5,19 +5,24 @@ import Detail from "./pages/Detail/Detail";
 import ScrollToTop from "./components/ScrollRestoration";
 import SearchResults from "./pages/SearchResults/SearchResults";
 import NotFound from "./pages/NotFound/NotFound";
+import Genres from "./pages/Genres/Genres";
+import Popular from "./pages/Popular/Popular";
+import Upcoming from "./pages/Upcoming/Upcoming";
 
 const Router = () => {
   return (
     <BrowserRouter>
       <ScrollToTop />
       <Routes>
-      <Route path="*" element={<NotFound />} />
+        <Route path="*" element={<NotFound />} />
         <Route element={<Container />}>
           <Route path="/" element={<Main />} />
           <Route path="/detail/:id" element={<Detail />} />
           <Route path="/search-results" element={<SearchResults />} />
+          <Route path="/genres" element={<Genres />} />
+          <Route path="/popular" element={<Popular />} />
+          <Route path="/upcoming" element={<Upcoming />} />
         </Route>
-
       </Routes>
     </BrowserRouter>
   );

@@ -3,7 +3,6 @@ import { useLocation, useNavigate } from "react-router-dom";
 import "./Nav.scss";
 
 const Nav = () => {
-  const [isHovered, setIsHovered] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const navigate = useNavigate();
   const location = useLocation();
@@ -22,7 +21,6 @@ const Nav = () => {
         `https://api.themoviedb.org/3/search/movie?api_key=${key}&language=ko-KR&query=${searchTerm}&page=1&include_adult=false`
       );
       const data = await response.json();
-      console.log(data);
 
       if (data.results && data.results.length > 0) {
         if (data.results.length === 1) {
@@ -53,39 +51,22 @@ const Nav = () => {
         >
           <p>◼︎ J.w Movie</p>
         </div>
-        <div
-          className="menu"
-          onMouseEnter={() => setIsHovered(true)}
-          onMouseLeave={() => setIsHovered(false)}
-        >
+        <div className="menu">
           <div className="menu-item">
-            <p>Genres</p>
+            <p onClick={()=>{
+              navigate("/genres")
+            }}>Genres</p>
           </div>
           <div className="menu-item">
-            <p>Rating</p>
+            <p onClick={()=>{
+              navigate("/popular")
+            }}>Popular</p>
           </div>
           <div className="menu-item">
-            <p>Runtime</p>
+            <p onClick={()=>{
+              navigate("/upcoming")
+            }}>Upcoming</p>
           </div>
-          {isHovered && (
-            <div className="dropdown">
-              <div className="dropdown-section">
-                <p>Action</p>
-                <p>Drama</p>
-                <p>Comedy</p>
-              </div>
-              <div className="dropdown-section">
-                <p>PG</p>
-                <p>PG-13</p>
-                <p>R</p>
-              </div>
-              <div className="dropdown-section">
-                <p>Short</p>
-                <p>Medium</p>
-                <p>Long</p>
-              </div>
-            </div>
-          )}
         </div>
         <div className="search">
           <p>Search</p>
