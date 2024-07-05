@@ -35,9 +35,8 @@ const Detail = () => {
           throw new Error("Network response was not ok");
         }
         const data = await response.json();
-        console.log(data);
+
         setTrailers(data.results);
-        console.log(trailers);
       } catch (error) {
         console.error("Error fetching trailers:", error);
       }
