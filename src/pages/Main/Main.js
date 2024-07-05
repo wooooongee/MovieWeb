@@ -16,8 +16,6 @@ const Main = () => {
           `${baseURL}/movie/popular?api_key=${key}&language=ko-KR&page=1`
         );
         const popularData = await popularResponse.json();
-        console.log(popularData);
-
         for (let movie of popularData.results) {
           const videoResponse = await fetch(
             `${baseURL}/movie/${movie.id}/videos?api_key=${key}&language=ko-KR`
@@ -25,7 +23,6 @@ const Main = () => {
           const videoData = await videoResponse.json();
 
           if (videoData.results && videoData.results.length > 0) {
-            console.log(videoData);
             const videoKey = videoData.results[0].key;
             setFeaturedMovie({
               ...movie,

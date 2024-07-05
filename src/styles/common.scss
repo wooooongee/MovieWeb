@@ -14,8 +14,3 @@ body{
 button:hover {
   cursor: pointer;
 }
-
-button {
-  @include textStyle(18px, 500);
-  border-radius: 50px;
-}
