@@ -1,14 +1,22 @@
-import React from "react";
+import React, { useMemo } from "react";
 import Category from "../../components/Category/Category";
-const Upcoming = () => {
-  const options = [
-    { id: "KR", name: "한국" },
-    { id: "US", name: "미국" },
-    { id: "JP", name: "일본" },
-  ];
+const BASE_URL = "https://api.themoviedb.org/3";
 
-  const fetchUrl = (region, apiKey) =>
-    `https://api.themoviedb.org/3/movie/upcoming?api_key=${apiKey}&language=ko-KR&region=${region}`;
+const Upcoming = () => {
+  const options = useMemo(
+    () => [
+      { id: "KR", name: "한국" },
+      { id: "US", name: "미국" },
+      { id: "JP", name: "일본" },
+    ],
+    []
+  );
+
+  const fetchUrl = useMemo(
+    () => (region, apiKey) =>
+      `${BASE_URL}/movie/upcoming?api_key=${apiKey}&language=ko-KR&region=${region}`,
+    []
+  );
 
   return (
     <Category

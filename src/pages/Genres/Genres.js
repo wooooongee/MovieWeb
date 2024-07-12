@@ -1,15 +1,20 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import Category from "../../components/Category/Category";
+import { API_KEY } from "../../config";
+const BASE_URL = "https://api.themoviedb.org/3";
+
 const Genres = () => {
   const [genres, setGenres] = useState([]);
-  const key = "cea591806ee129e294031c6b81dcea4a";
 
   useEffect(() => {
     const fetchGenres = async () => {
       try {
         const response = await fetch(
-          `https://api.themoviedb.org/3/genre/movie/list?api_key=${key}&language=ko-KR`
+          `${BASE_URL}/genre/movie/list?api_key=${API_KEY}&language=ko-KR`
         );
+        if (!response.ok) {
+          throw new Error("Failed to fetch genres");
+        }
         const data = await response.json();
         setGenres(data.genres);
       } catch (error) {
@@ -19,10 +24,12 @@ const Genres = () => {
     fetchGenres();
   }, []);
 
-  const fetchUrl = (genreId, apiKey) => 
-    genreId === "all" 
-      ? `https://api.themoviedb.org/3/discover/movie?api_key=${apiKey}&language=ko-KR&sort_by=popularity.desc&page=1`
-      : `https://api.themoviedb.org/3/discover/movie?api_key=${apiKey}&language=ko-KR&with_genres=${genreId}&page=1`;
+  const fetchUrl = useCallback((genreId, apiKey) => {
+    const baseParams = `api_key=${apiKey}&language=ko-KR&page=1`;
+    return genreId === "all"
+      ? `${BASE_URL}/discover/movie?${baseParams}&sort_by=popularity.desc`
+      : `${BASE_URL}/discover/movie?${baseParams}&with_genres=${genreId}`;
+  }, []);
 
   return (
     <Category

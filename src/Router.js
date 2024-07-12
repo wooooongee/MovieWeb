@@ -1,8 +1,10 @@
+import React from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
+
 import Container from "./Container";
+import ScrollToTop from "./components/ScrollRestoration";
 import Main from "./pages/Main/Main";
 import Detail from "./pages/Detail/Detail";
-import ScrollToTop from "./components/ScrollRestoration";
 import SearchResults from "./pages/SearchResults/SearchResults";
 import NotFound from "./pages/NotFound/NotFound";
 import Genres from "./pages/Genres/Genres";
@@ -14,7 +16,6 @@ const Router = () => {
     <BrowserRouter>
       <ScrollToTop />
       <Routes>
-        <Route path="*" element={<NotFound />} />
         <Route element={<Container />}>
           <Route path="/" element={<Main />} />
           <Route path="/detail/:id" element={<Detail />} />
@@ -23,6 +24,7 @@ const Router = () => {
           <Route path="/popular" element={<Popular />} />
           <Route path="/upcoming" element={<Upcoming />} />
         </Route>
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>
   );

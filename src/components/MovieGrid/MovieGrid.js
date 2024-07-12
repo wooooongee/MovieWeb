@@ -1,15 +1,46 @@
-import React from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { Link } from "react-router-dom";
+import { API_KEY, BASE_URL } from "../../config";
 import "./MovieGrid.scss";
 
 const MovieGrid = ({ movies }) => {
-  if (movies.length === 0) {
-    return <p>표시할 영화가 없습니다.</p>;
-  }
+  const [filteredMovies, setFilteredMovies] = useState([]);
+
+  const fetchRecommendations = useCallback(async (movie) => {
+    try {
+      const response = await fetch(
+        `${BASE_URL}${movie.id}/recommendations?api_key=${API_KEY}&language=ko-KR`
+      );
+      const data = await response.json();
+      return data.results && data.results.length > 0 ? movie : null;
+    } catch (error) {
+      console.error(
+        `Error fetching recommendations for movie ${movie.id}:`,
+        error
+      );
+      return null;
+    }
+  }, []);
+
+  useEffect(() => {
+    const filterMovies = async () => {
+      const validMovies = movies.filter(
+        (movie) => movie.poster_path && movie.release_date
+      );
+
+      const moviesWithRecommendations = await Promise.all(
+        validMovies.map(fetchRecommendations)
+      );
+
+      setFilteredMovies(moviesWithRecommendations.filter(Boolean));
+    };
+
+    filterMovies();
+  }, [movies, fetchRecommendations]);
 
   return (
     <div className="movie-grid">
-      {movies.map((movie) => (
+      {filteredMovies.map((movie) => (
         <div key={movie.id} className="movie-card">
           <Link to={`/detail/${movie.id}`}>
             <div className="image-container">
