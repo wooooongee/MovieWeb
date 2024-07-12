@@ -1,25 +1,36 @@
-import "./Detail.scss";
-import MovieSlider from "../../components/MovieSlider/MovieSlider";
-import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import MovieSlider from "../../components/MovieSlider/MovieSlider";
+import { API_KEY, BASE_URL } from "../../config";
+import "./Detail.scss";
 
 const Detail = () => {
   const navigate = useNavigate();
   const { id } = useParams();
-  const [movieData, setMovieData] = useState();
+  const [movieData, setMovieData] = useState(null);
   const [trailers, setTrailers] = useState([]);
-  const key = "cea591806ee129e294031c6b81dcea4a";
-  const URL = "https://api.themoviedb.org/3/movie/";
   useEffect(() => {
     const fetchMovieData = async () => {
       try {
         const response = await fetch(
-          `${URL}${id}?api_key=${key}&language=ko-KR`
+          `${BASE_URL}${id}?api_key=${API_KEY}&language=ko-KR`
         );
         if (!response.ok) {
           throw new Error("Network response was not ok");
         }
         const data = await response.json();
+
+        if (!data.overview) {
+          const fallbackResponse = await fetch(
+            `${BASE_URL}${id}?api_key=${API_KEY}&language=en-US`
+          );
+          if (!fallbackResponse.ok) {
+            throw new Error("Fallback network response was not ok");
+          }
+          const fallbackData = await fallbackResponse.json();
+          data.overview = fallbackData.overview;
+        }
+
         setMovieData(data);
       } catch (error) {
         console.error("Error fetching movie data:", error);
@@ -29,7 +40,7 @@ const Detail = () => {
     const fetchTrailers = async () => {
       try {
         const response = await fetch(
-          `${URL}${id}/videos?api_key=${key}&language=ko-KR`
+          `${BASE_URL}${id}/videos?api_key=${API_KEY}&language=ko-KR`
         );
         if (!response.ok) {
           throw new Error("Network response was not ok");
@@ -46,7 +57,6 @@ const Detail = () => {
     fetchTrailers();
   }, [id]);
   if (!movieData) return <div>Loading...</div>;
-
   return (
     <div className="detail-container">
       <h1

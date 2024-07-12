@@ -1,14 +1,15 @@
+import React from "react";
+import { Outlet } from "react-router-dom";
 import Nav from "./components/Nav/Nav";
 import Footer from "./components/Footer/Footer";
-import { Outlet } from "react-router-dom";
 
 const Container = () => {
   return (
-    <>
+    <React.Fragment>
       <Nav />
       <Outlet />
       <Footer />
-    </>
+    </React.Fragment>
   );
 };
 

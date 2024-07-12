@@ -1,33 +1,40 @@
-import React, { useState, useEffect } from "react";
-import "./Main.scss";
+import React, { useState, useEffect, useCallback } from "react";
 import MovieSlider from "../../components/MovieSlider/MovieSlider";
+import { API_KEY, BASE_URL } from "../../config";
+import "./Main.scss";
 
 const Main = () => {
   const [featuredMovie, setFeaturedMovie] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
 
-  const key = "cea591806ee129e294031c6b81dcea4a";
-  const baseURL = "https://api.themoviedb.org/3";
+  const fetchMovieWithVideo = useCallback(async (movie) => {
+    const videoResponse = await fetch(
+      `${BASE_URL}${movie.id}/videos?api_key=${API_KEY}&language=ko-KR`
+    );
+    const videoData = await videoResponse.json();
+
+    if (videoData.results && videoData.results.length > 0) {
+      const videoKey = videoData.results[0].key;
+      return {
+        ...movie,
+        videoUrl: `https://www.youtube.com/embed/${videoKey}`,
+      };
+    }
+    return null;
+  }, []);
 
   useEffect(() => {
     const fetchFeaturedMovie = async () => {
       try {
         const popularResponse = await fetch(
-          `${baseURL}/movie/popular?api_key=${key}&language=ko-KR&page=1`
+          `${BASE_URL}popular?api_key=${API_KEY}&language=ko-KR&page=1`
         );
         const popularData = await popularResponse.json();
+        
         for (let movie of popularData.results) {
-          const videoResponse = await fetch(
-            `${baseURL}/movie/${movie.id}/videos?api_key=${key}&language=ko-KR`
-          );
-          const videoData = await videoResponse.json();
-
-          if (videoData.results && videoData.results.length > 0) {
-            const videoKey = videoData.results[0].key;
-            setFeaturedMovie({
-              ...movie,
-              videoUrl: `https://www.youtube.com/embed/${videoKey}`,
-            });
+          const movieWithVideo = await fetchMovieWithVideo(movie);
+          if (movieWithVideo) {
+            setFeaturedMovie(movieWithVideo);
             break;
           }
         }
@@ -39,7 +46,7 @@ const Main = () => {
     };
 
     fetchFeaturedMovie();
-  }, []);
+  }, [fetchMovieWithVideo]);
 
   if (isLoading) {
     return <div>로딩 중...</div>;
