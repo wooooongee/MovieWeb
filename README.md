@@ -6,6 +6,12 @@ MovieWeb은 TMDb API를 사용하여 최신작, 인기작, 개봉 예정작 등 
 ---
 
 ## 구현 기능
+- CSS Grid & media query 활용으로 반응형 웹 디자인 구현
+- TMDB (The Movie Database) API와 연동하여 받은 데이터를 바탕으로 영화 정보를 화면에 렌더링
+- 코드 유연성과 재사용성을 높이기 위해 컴포넌트 분리
+- 비동기 데이터 처리(Async/Await)
+- 데이터 필터링
+- 성능 최적화(useCallback/Promise.all)
 
 ## Main Trailer
 
